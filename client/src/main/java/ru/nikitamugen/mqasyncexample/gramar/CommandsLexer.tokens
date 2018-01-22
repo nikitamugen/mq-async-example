@@ -1,0 +1,12 @@
+T__0=1
+T__1=2
+ADD=3
+DELETE=4
+GET=5
+HELP=6
+EXIT=7
+QUIT=8
+WORD=9
+WS=10
+'?'=1
+'q'=2

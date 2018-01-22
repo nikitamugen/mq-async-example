@@ -1,0 +1,59 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.9.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://maven.repository.redhat.com/ga/"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'antlr'
+apply plugin: 'org.springframework.boot'
+
+group = 'ru.nikitamugen'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+    maven {
+        url "https://maven.repository.redhat.com/ga/"
+    }
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-activemq')
+    compile('org.apache.activemq:activemq-broker')
+    compile('com.fasterxml.jackson.core:jackson-databind')
+
+    antlr "org.antlr:antlr4:4.5.1"
+    compile ('org.antlr:antlr4-runtime:4.7')
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+generateGrammarSource {
+    maxHeapSize = "64m"
+    arguments += ['-package', 'ru.nikitamugen.mqasyncexample.gramar', '-visitor']
+    outputDirectory = new File("src/main/java/ru/nikitamugen/mqasyncexample/gramar/".toString())
+}
+compileJava.dependsOn generateGrammarSource
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Version': version,
+                'Main-Class': 'ru.nikitamugen.mqasyncexample.ClientApp'
+    }
+    baseName = 'client'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
