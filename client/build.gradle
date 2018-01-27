@@ -1,43 +1,36 @@
-buildscript {
-    ext {
-        springBootVersion = '1.5.9.RELEASE'
-    }
-    repositories {
-        mavenCentral()
-        maven {
-            url "https://maven.repository.redhat.com/ga/"
-        }
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
-}
-
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'antlr'
-apply plugin: 'org.springframework.boot'
 
 group = 'ru.nikitamugen'
-version = '0.0.1-SNAPSHOT'
+version = '1.0'
 sourceCompatibility = 1.8
 
+ext {
+    activemqVersion = '5.15.2'
+    jacksonVersion = '2.9.3'
+    antlr4Version = '4.7.1'
+    log4jVersion = '1.2.17'
+    log4j12BindingVersion = '1.7.25'
+}
+
 repositories {
-	mavenCentral()
+    mavenCentral()
     maven {
         url "https://maven.repository.redhat.com/ga/"
     }
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-activemq')
-    compile('org.apache.activemq:activemq-broker')
-    compile('com.fasterxml.jackson.core:jackson-databind')
+    compile group: 'org.apache.activemq', name: 'activemq-broker', version: activemqVersion
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
 
-    antlr "org.antlr:antlr4:4.5.1"
-    compile ('org.antlr:antlr4-runtime:4.7')
+    antlr "org.antlr:antlr4:${antlr4Version}"
+    compile group: 'org.antlr', name: 'antlr4-runtime', version: antlr4Version
 
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile group: 'log4j', name: 'log4j', version: log4jVersion
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: log4j12BindingVersion
+
 }
 
 generateGrammarSource {
@@ -47,13 +40,11 @@ generateGrammarSource {
 }
 compileJava.dependsOn generateGrammarSource
 
-//create a single Jar with all dependencies
-task fatJar(type: Jar) {
+jar {
     manifest {
         attributes 'Implementation-Version': version,
-                'Main-Class': 'ru.nikitamugen.mqasyncexample.ClientApp'
+                   'Main-Class': 'ru.nikitamugen.mqasyncexample.ClientApp'
     }
-    baseName = 'client'
+    archiveName = 'client.jar'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
 }

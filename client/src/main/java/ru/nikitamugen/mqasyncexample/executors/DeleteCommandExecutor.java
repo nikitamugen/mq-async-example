@@ -23,13 +23,7 @@ public class DeleteCommandExecutor implements Runnable {
     @Override
     public void run() {
         WordRequest request = WordRequest.createDeleteWord(code, value);
-        MessageSender messageSender = MessageSender.getInstance();
-        TextMessage response = (TextMessage)messageSender.send(request);
-
-        try {
-            logger.info(response.getText());
-        } catch (JMSException ex) {
-            logger.error(ex.getMessage(), ex);
-        }
+        MessageSender messageSender = new MessageSender();
+        messageSender.send(request);
     }
 }

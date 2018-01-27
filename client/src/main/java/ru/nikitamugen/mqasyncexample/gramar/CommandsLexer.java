@@ -1,4 +1,4 @@
-// Generated from Commands.g4 by ANTLR 4.5.1
+// Generated from Commands.g4 by ANTLR 4.7.1
 package ru.nikitamugen.mqasyncexample.gramar;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class CommandsLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.5.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.7.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -19,6 +19,10 @@ public class CommandsLexer extends Lexer {
 	public static final int
 		T__0=1, T__1=2, ADD=3, DELETE=4, GET=5, HELP=6, EXIT=7, QUIT=8, WORD=9, 
 		WS=10;
+	public static String[] channelNames = {
+		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
+	};
+
 	public static String[] modeNames = {
 		"DEFAULT_MODE"
 	};
@@ -84,13 +88,16 @@ public class CommandsLexer extends Lexer {
 	public String getSerializedATN() { return _serializedATN; }
 
 	@Override
+	public String[] getChannelNames() { return channelNames; }
+
+	@Override
 	public String[] getModeNames() { return modeNames; }
 
 	@Override
 	public ATN getATN() { return _ATN; }
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\2\fu\b\1\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2\fu\b\1\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\3\2\3\2\3\3\3\3\3\4"+
@@ -101,16 +108,16 @@ public class CommandsLexer extends Lexer {
 		"\6\27p\n\27\r\27\16\27q\3\27\3\27\2\2\30\3\3\5\4\7\2\t\2\13\2\r\2\17\2"+
 		"\21\2\23\2\25\2\27\2\31\2\33\2\35\2\37\5!\6#\7%\b\'\t)\n+\13-\f\3\2\20"+
 		"\4\2CCcc\4\2FFff\4\2GGgg\4\2NNnn\4\2VVvv\4\2IIii\4\2JJjj\4\2RRrr\4\2Z"+
-		"Zzz\4\2KKkk\4\2SSss\4\2WWww\t\2\62;C\\aac|\u0403\u0403\u0412\u0431\u0453"+
-		"\u0453\5\2\13\f\17\17\"\"j\2\3\3\2\2\2\2\5\3\2\2\2\2\37\3\2\2\2\2!\3\2"+
-		"\2\2\2#\3\2\2\2\2%\3\2\2\2\2\'\3\2\2\2\2)\3\2\2\2\2+\3\2\2\2\2-\3\2\2"+
-		"\2\3/\3\2\2\2\5\61\3\2\2\2\7\63\3\2\2\2\t\65\3\2\2\2\13\67\3\2\2\2\r9"+
-		"\3\2\2\2\17;\3\2\2\2\21=\3\2\2\2\23?\3\2\2\2\25A\3\2\2\2\27C\3\2\2\2\31"+
-		"E\3\2\2\2\33G\3\2\2\2\35I\3\2\2\2\37K\3\2\2\2!O\3\2\2\2#V\3\2\2\2%Z\3"+
-		"\2\2\2\'_\3\2\2\2)d\3\2\2\2+j\3\2\2\2-o\3\2\2\2/\60\7A\2\2\60\4\3\2\2"+
-		"\2\61\62\7s\2\2\62\6\3\2\2\2\63\64\t\2\2\2\64\b\3\2\2\2\65\66\t\3\2\2"+
-		"\66\n\3\2\2\2\678\t\4\2\28\f\3\2\2\29:\t\5\2\2:\16\3\2\2\2;<\t\6\2\2<"+
-		"\20\3\2\2\2=>\t\7\2\2>\22\3\2\2\2?@\t\b\2\2@\24\3\2\2\2AB\t\t\2\2B\26"+
+		"Zzz\4\2KKkk\4\2SSss\4\2WWww\t\2\62;C\\aac|\u0403\u0403\u0412\u0451\u0453"+
+		"\u0453\5\2\13\f\17\17\"\"\2j\2\3\3\2\2\2\2\5\3\2\2\2\2\37\3\2\2\2\2!\3"+
+		"\2\2\2\2#\3\2\2\2\2%\3\2\2\2\2\'\3\2\2\2\2)\3\2\2\2\2+\3\2\2\2\2-\3\2"+
+		"\2\2\3/\3\2\2\2\5\61\3\2\2\2\7\63\3\2\2\2\t\65\3\2\2\2\13\67\3\2\2\2\r"+
+		"9\3\2\2\2\17;\3\2\2\2\21=\3\2\2\2\23?\3\2\2\2\25A\3\2\2\2\27C\3\2\2\2"+
+		"\31E\3\2\2\2\33G\3\2\2\2\35I\3\2\2\2\37K\3\2\2\2!O\3\2\2\2#V\3\2\2\2%"+
+		"Z\3\2\2\2\'_\3\2\2\2)d\3\2\2\2+j\3\2\2\2-o\3\2\2\2/\60\7A\2\2\60\4\3\2"+
+		"\2\2\61\62\7s\2\2\62\6\3\2\2\2\63\64\t\2\2\2\64\b\3\2\2\2\65\66\t\3\2"+
+		"\2\66\n\3\2\2\2\678\t\4\2\28\f\3\2\2\29:\t\5\2\2:\16\3\2\2\2;<\t\6\2\2"+
+		"<\20\3\2\2\2=>\t\7\2\2>\22\3\2\2\2?@\t\b\2\2@\24\3\2\2\2AB\t\t\2\2B\26"+
 		"\3\2\2\2CD\t\n\2\2D\30\3\2\2\2EF\t\13\2\2F\32\3\2\2\2GH\t\f\2\2H\34\3"+
 		"\2\2\2IJ\t\r\2\2J\36\3\2\2\2KL\5\7\4\2LM\5\t\5\2MN\5\t\5\2N \3\2\2\2O"+
 		"P\5\t\5\2PQ\5\13\6\2QR\5\r\7\2RS\5\13\6\2ST\5\17\b\2TU\5\13\6\2U\"\3\2"+

@@ -1,4 +1,4 @@
-// Generated from Commands.g4 by ANTLR 4.5.1
+// Generated from Commands.g4 by ANTLR 4.7.1
 package ru.nikitamugen.mqasyncexample.gramar;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 

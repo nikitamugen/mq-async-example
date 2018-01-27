@@ -1,4 +1,4 @@
-// Generated from Commands.g4 by ANTLR 4.5.1
+// Generated from Commands.g4 by ANTLR 4.7.1
 package ru.nikitamugen.mqasyncexample.gramar;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class CommandsParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.5.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.7.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -125,6 +125,7 @@ public class CommandsParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(21);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case ADD:
 				{
@@ -396,7 +397,10 @@ public class CommandsParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==T__0 || _la==HELP) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -445,7 +449,10 @@ public class CommandsParser extends Parser {
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << EXIT) | (1L << QUIT))) != 0)) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -546,20 +553,20 @@ public class CommandsParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\f\63\4\2\t\2\4\3"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\f\63\4\2\t\2\4\3"+
 		"\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\3\2\3\2\3\2\3"+
 		"\2\5\2\30\n\2\3\3\3\3\3\3\6\3\35\n\3\r\3\16\3\36\3\4\3\4\3\4\6\4$\n\4"+
 		"\r\4\16\4%\3\5\3\5\3\5\3\6\3\6\3\7\3\7\3\b\3\b\3\t\3\t\3\t\2\2\n\2\4\6"+
-		"\b\n\f\16\20\2\4\4\2\3\3\b\b\4\2\4\4\t\n\60\2\27\3\2\2\2\4\31\3\2\2\2"+
-		"\6 \3\2\2\2\b\'\3\2\2\2\n*\3\2\2\2\f,\3\2\2\2\16.\3\2\2\2\20\60\3\2\2"+
-		"\2\22\30\5\4\3\2\23\30\5\6\4\2\24\30\5\b\5\2\25\30\5\n\6\2\26\30\5\f\7"+
-		"\2\27\22\3\2\2\2\27\23\3\2\2\2\27\24\3\2\2\2\27\25\3\2\2\2\27\26\3\2\2"+
-		"\2\30\3\3\2\2\2\31\32\7\5\2\2\32\34\5\16\b\2\33\35\5\20\t\2\34\33\3\2"+
-		"\2\2\35\36\3\2\2\2\36\34\3\2\2\2\36\37\3\2\2\2\37\5\3\2\2\2 !\7\6\2\2"+
-		"!#\5\16\b\2\"$\5\20\t\2#\"\3\2\2\2$%\3\2\2\2%#\3\2\2\2%&\3\2\2\2&\7\3"+
-		"\2\2\2\'(\7\7\2\2()\5\16\b\2)\t\3\2\2\2*+\t\2\2\2+\13\3\2\2\2,-\t\3\2"+
-		"\2-\r\3\2\2\2./\7\13\2\2/\17\3\2\2\2\60\61\7\13\2\2\61\21\3\2\2\2\5\27"+
-		"\36%";
+		"\b\n\f\16\20\2\4\4\2\3\3\b\b\4\2\4\4\t\n\2\60\2\27\3\2\2\2\4\31\3\2\2"+
+		"\2\6 \3\2\2\2\b\'\3\2\2\2\n*\3\2\2\2\f,\3\2\2\2\16.\3\2\2\2\20\60\3\2"+
+		"\2\2\22\30\5\4\3\2\23\30\5\6\4\2\24\30\5\b\5\2\25\30\5\n\6\2\26\30\5\f"+
+		"\7\2\27\22\3\2\2\2\27\23\3\2\2\2\27\24\3\2\2\2\27\25\3\2\2\2\27\26\3\2"+
+		"\2\2\30\3\3\2\2\2\31\32\7\5\2\2\32\34\5\16\b\2\33\35\5\20\t\2\34\33\3"+
+		"\2\2\2\35\36\3\2\2\2\36\34\3\2\2\2\36\37\3\2\2\2\37\5\3\2\2\2 !\7\6\2"+
+		"\2!#\5\16\b\2\"$\5\20\t\2#\"\3\2\2\2$%\3\2\2\2%#\3\2\2\2%&\3\2\2\2&\7"+
+		"\3\2\2\2\'(\7\7\2\2()\5\16\b\2)\t\3\2\2\2*+\t\2\2\2+\13\3\2\2\2,-\t\3"+
+		"\2\2-\r\3\2\2\2./\7\13\2\2/\17\3\2\2\2\60\61\7\13\2\2\61\21\3\2\2\2\5"+
+		"\27\36%";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

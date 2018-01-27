@@ -1,8 +1,8 @@
 package ru.nikitamugen.mqasyncexample;
 
+import com.google.common.base.Strings;
+import com.sun.tools.javac.util.Assert;
 import org.apache.log4j.Logger;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import ru.nikitamugen.mqasyncexample.executors.AddCommandExecutor;
 import ru.nikitamugen.mqasyncexample.executors.DeleteCommandExecutor;
 import ru.nikitamugen.mqasyncexample.executors.GetCommandExecutor;
@@ -13,14 +13,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-@SpringBootApplication
 public class ClientApp {
 
-    private static Logger logger = Logger.getLogger(ClientApp.class);
+    private static Logger logger = Logger.getLogger("ClientApp");
+    private static Logger protocolLogger = Logger.getLogger("Input");
 
     public static void main(String[] args) {
-        SpringApplication.run(ClientApp.class, args);
+        initSettings(args[0], args[1]);
         startRead();
+    }
+
+    private static void initSettings(String brokerHost, String brokerPort) {
+        Assert.check(!Strings.isNullOrEmpty(brokerHost));
+        Assert.check(!Strings.isNullOrEmpty(brokerPort));
+
+        Settings.INSTANCE.setBrokerHost(brokerHost);
+        Settings.INSTANCE.setBrokerPort(brokerPort);
+
+        logger.info("Uses broker url: "+Settings.INSTANCE.getBrokerUrl());
     }
 
     private static void startRead() {
@@ -37,12 +47,15 @@ public class ClientApp {
             while (true) {
 
                 String input = br.readLine();
+                protocolLogger.info(input);
+
                 ParserResult result = GramarParser.parse(input);
                 if (result.needExit) {
                     break;
                 }
                 if (result.needHelp) {
                     typeHelp();
+                    continue;
                 }
 
                 switch (result.command) {
@@ -80,12 +93,12 @@ public class ClientApp {
     }
 
     private static void typeHelp() {
-        logger.info("Помощь:");
-        logger.info("add <слово> <значение1> [<значение2> ...] - добавляет в словарь указанные значения слова," +
-                " сохраняя при это старые");
-        logger.info("get <слово> - возвращает значения слова, каждое слово должно начинаться с новой строки. " +
-                "В случае если искомого слова в словаре не содержится, приложение должно сообщить об этом.");
-        logger.info("delete <слово> <значение1> [<значение2> ...] - удаляет из словаря указанные значения слова");
+        logger.info("Help:");
+        logger.info("add <word> <value1> [<value2> ...] - append values of the word to the dictionary.");
+        logger.info("get <word> - get values of the word");
+        logger.info("delete <word> <value1> [<value2> ...] - remove values of the word");
+        logger.info("exit / quit / q - close this app");
+        logger.info("help / ? - shows me :)");
     }
 
     private static void createAndRunAddExecutors(ParserResult parserResult) {

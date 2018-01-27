@@ -31,5 +31,5 @@ HELP : H E L P ;
 EXIT : E X I T ;
 QUIT : Q U I T ;
 
-WORD : [_a-zA-Zа-ЯА-ЯёЁ0-9]+ ;
+WORD : [_a-zA-Zа-яА-ЯёЁ0-9]+ ;
 WS: [ \t\n\r]+ -> skip ;

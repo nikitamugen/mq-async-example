@@ -7,6 +7,7 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import ru.nikitamugen.mqasyncexample.api.request.WordRequestTypes;
 import ru.nikitamugen.mqasyncexample.api.request.AddWord;
 import ru.nikitamugen.mqasyncexample.api.request.DeleteWord;
@@ -32,17 +33,18 @@ public class MessageConsumer {
     WordsService wordsService;
 
     @JmsListener(destination = wordsQueueName)
-    public void receiveMessage(@Payload WordRequest request,
-                               @Headers MessageHeaders headers,
-                               Message message, Session session)
+    public void receiveMessage(@Headers MessageHeaders headers,
+                               TextMessage message, Session session)
             throws JMSException, InterruptedException {
 
         final String correlationId = message.getJMSCorrelationID();
+        log.info("Got message: "+message.getText());
+        WordRequest request = WordRequest.createFromJsonString(message.getText());
 
         // Dramatic pause ...
         //
-//        CountDownLatch latch = new CountDownLatch(1);
-//        latch.await(10000, TimeUnit.MILLISECONDS);
+        CountDownLatch latch = new CountDownLatch(1);
+        latch.await(10000, TimeUnit.MILLISECONDS);
 
         log.info("- - - - - - - - - - - - - - - - - - - - - - - -");
         log.info("received <" + request + "> id: <" + correlationId + ">");
@@ -110,8 +112,13 @@ public class MessageConsumer {
 
         try {
             List<String> values = wordsService.get(request.getCode());
-            final String separator = System.getProperty("line.separator");
-            final String text = String.join(separator, values);
+            String text;
+            if (values.isEmpty()) {
+                text = "<Нечего показывать>";
+            } else {
+                final String separator = System.getProperty("line.separator");
+                text = String.join(separator, values);
+            }
             return createTextResponse(text, session);
         } catch (KeyNotFoundException ex) {
             final String text = ex.getMessage();

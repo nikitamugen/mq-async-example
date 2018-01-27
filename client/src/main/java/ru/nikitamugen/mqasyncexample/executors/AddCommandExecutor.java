@@ -23,13 +23,7 @@ public class AddCommandExecutor implements Runnable {
     @Override
     public void run() {
         WordRequest request = WordRequest.createAddWord(code, value);
-        MessageSender messageSender = MessageSender.getInstance();
-        TextMessage response = (TextMessage)messageSender.send(request);
-
-        try {
-            logger.info(response.getText());
-        } catch (JMSException ex) {
-            logger.error(ex.getMessage(), ex);
-        }
+        MessageSender messageSender = new MessageSender();
+        messageSender.send(request);
     }
 }
