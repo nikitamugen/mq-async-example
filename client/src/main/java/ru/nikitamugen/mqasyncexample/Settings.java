@@ -34,7 +34,7 @@ public class Settings {
 
     public String getBrokerUrl() {
         return String.format(
-                "tcp://%s:%s",
+                "tcp://%s:%s?jms.useAsyncSend=true",
                 getBrokerHost(),
                 getBrokerPort());
     }

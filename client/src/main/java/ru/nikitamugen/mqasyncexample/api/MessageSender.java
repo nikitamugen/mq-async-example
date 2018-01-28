@@ -8,6 +8,7 @@ import ru.nikitamugen.mqasyncexample.Settings;
 import ru.nikitamugen.mqasyncexample.api.request.WordRequest;
 
 import javax.jms.*;
+import java.util.Objects;
 import java.util.Random;
 
 public class MessageSender {
@@ -27,13 +28,15 @@ public class MessageSender {
     }
 
     public void send(WordRequest wordRequest) {
-        ActiveMQConnectionFactory connectionFactory =
-                new ActiveMQConnectionFactory(Settings.INSTANCE.getBrokerUrl());
-        Connection connection;
+        Connection connection = null;
+        Session session = null;
         try {
+            ActiveMQConnectionFactory connectionFactory =
+                    new ActiveMQConnectionFactory(Settings.INSTANCE.getBrokerUrl());
             connection = connectionFactory.createConnection();
             connection.start();
-            Session session = connection.createSession(transacted, ackMode);
+
+            session = connection.createSession(transacted, ackMode);
             Destination adminQueue = session.createQueue(queueName);
 
             //Setup a message producer to send message to the queue the server is consuming from
@@ -48,7 +51,8 @@ public class MessageSender {
             MessageConsumer responseConsumer = session.createConsumer(tempDest);
 
             //This class will handle the messages to the temp queue as well
-            final MessageListener messageListener = new MessageListener(wordRequest);
+            final MessageListener messageListener =
+                    new MessageListener(wordRequest, connection, session);
             responseConsumer.setMessageListener(messageListener);
 
             //Now create the actual message you want to send
@@ -68,10 +72,35 @@ public class MessageSender {
             String correlationId = this.createRandomString();
             message.setJMSCorrelationID(correlationId);
             messageProducer.send(message);
+            messageProducer.close();
         } catch (JMSException ex) {
             logger.error(ex.getMessage());
+            closeConnection(connection);
+            closeSession(session);
         } catch (JsonProcessingException ex) {
             logger.error(ex.getMessage());
+            closeConnection(connection);
+            closeSession(session);
+        }
+    }
+
+    private void closeConnection(Connection connection) {
+        try {
+            if (Objects.nonNull(connection)) {
+                connection.close();
+            }
+        } catch (JMSException ex) {
+            logger.error(ex);
+        }
+    }
+
+    private void closeSession(Session session) {
+        try {
+            if (Objects.nonNull(session)) {
+                session.close();
+            }
+        } catch (JMSException ex) {
+            logger.error(ex);
         }
     }
 
