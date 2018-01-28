@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import ru.nikitamugen.mqasyncexample.api.request.WordRequestTypes;
 import ru.nikitamugen.mqasyncexample.api.request.AddWord;
 import ru.nikitamugen.mqasyncexample.api.request.DeleteWord;
@@ -25,52 +23,59 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class MessageConsumer {
-    private static Logger log = Logger.getLogger(MessageConsumer.class);
+    private static Logger logger = Logger.getLogger(MessageConsumer.class);
 
     private static final String wordsQueueName = "queue.words";
 
     @Autowired
     WordsService wordsService;
 
-    @JmsListener(destination = wordsQueueName)
+    // Concurrency set to 1 thread max
+    // for each message in this queue
+    //
+    @JmsListener(destination = wordsQueueName, concurrency = "1-1")
     public void receiveMessage(@Headers MessageHeaders headers,
                                TextMessage message, Session session)
-            throws JMSException, InterruptedException {
+            throws InterruptedException {
 
-        final String correlationId = message.getJMSCorrelationID();
-        log.info("Got message: "+message.getText());
-        WordRequest request = WordRequest.createFromJsonString(message.getText());
+        try {
+            final String correlationId = message.getJMSCorrelationID();
+            logger.info("Got message: " + message.getText());
+            WordRequest request = WordRequest.createFromJsonString(message.getText());
 
-        // Dramatic pause ...
-        //
-        CountDownLatch latch = new CountDownLatch(1);
-        latch.await(10000, TimeUnit.MILLISECONDS);
+            // Dramatic pause ...
+            //
+            CountDownLatch latch = new CountDownLatch(1);
+            latch.await(5000, TimeUnit.MILLISECONDS);
 
-        log.info("- - - - - - - - - - - - - - - - - - - - - - - -");
-        log.info("received <" + request + "> id: <" + correlationId + ">");
-        log.info("- - - - - - - - - - - - - - - - - - - - - - - -");
-        log.info("######              Details               #####");
-        log.info("- - - - - - - - - - - - - - - - - - - - - - - -");
-        log.info("headers: " + headers);
-        log.info("message: " + message);
-        log.info("session: " + session);
-        log.info("- - - - - - - - - - - - - - - - - - - - - - - -");
+            logger.info("- - - - - - - - - - - - - - - - - - - - - - - -");
+            logger.info("received <" + request + "> id: <" + correlationId + ">");
+            logger.info("- - - - - - - - - - - - - - - - - - - - - - - -");
+            logger.info("######              Details               #####");
+            logger.info("- - - - - - - - - - - - - - - - - - - - - - - -");
+            logger.info("headers: " + headers);
+            logger.info("message: " + message);
+            logger.info("session: " + session);
+            logger.info("- - - - - - - - - - - - - - - - - - - - - - - -");
 
-        Message response = handleRequest(request, session);
-        response.setJMSCorrelationID(message.getJMSCorrelationID());
+            Message response = handleRequest(request, session);
+            response.setJMSCorrelationID(message.getJMSCorrelationID());
 
-        log.info("- - - - - - - - - - - - - - - - - - - - - - - -");
-        log.info("got response for id: <" + correlationId + ">");
-        log.info("response:      " + response);
-        log.info("- - - - - - - - - - - - - - - - - - - - - - - -");
+            logger.info("- - - - - - - - - - - - - - - - - - - - - - - -");
+            logger.info("got response for id: <" + correlationId + ">");
+            logger.info("response:      " + response);
+            logger.info("- - - - - - - - - - - - - - - - - - - - - - - -");
 
-        MessageProducer replyProducer = session.createProducer(message.getJMSReplyTo());
-        replyProducer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-        replyProducer.send(message.getJMSReplyTo(), response);
+            MessageProducer replyProducer = session.createProducer(message.getJMSReplyTo());
+            replyProducer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+            replyProducer.send(message.getJMSReplyTo(), response);
 
-        log.info("- - - - - - - - - - - - - - - - - - - - - - - -");
-        log.info("sent response for id: <" + correlationId + ">");
-        log.info("- - - - - - - - - - - - - - - - - - - - - - - -");
+            logger.info("- - - - - - - - - - - - - - - - - - - - - - - -");
+            logger.info("sent response for id: <" + correlationId + ">");
+            logger.info("- - - - - - - - - - - - - - - - - - - - - - - -");
+        } catch (JMSException ex) {
+            logger.error(ex);
+        }
     }
 
     private Message handleRequest(final WordRequest request, final Session session)

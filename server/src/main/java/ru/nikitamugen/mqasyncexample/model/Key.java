@@ -23,7 +23,10 @@ public class Key<E extends Object, V extends Object> implements ImDictionary<E, 
         return rest.find(e);
     }
     public Boolean contains(E e) {
-        return null;
+        if (this.key.equals(e)) {
+            return true;
+        }
+        return rest.contains(e);
     }
     public E first() {
         return key;
