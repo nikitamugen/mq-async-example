@@ -1,8 +1,8 @@
 package ru.nikitamugen.mqasyncexample;
 
 import com.google.common.base.Strings;
-import com.sun.tools.javac.util.Assert;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import ru.nikitamugen.mqasyncexample.executors.AddCommandExecutor;
 import ru.nikitamugen.mqasyncexample.executors.DeleteCommandExecutor;
 import ru.nikitamugen.mqasyncexample.executors.GetCommandExecutor;
@@ -24,8 +24,8 @@ public class ClientApp {
     }
 
     private static void initSettings(String brokerHost, String brokerPort) {
-        Assert.check(!Strings.isNullOrEmpty(brokerHost));
-        Assert.check(!Strings.isNullOrEmpty(brokerPort));
+        Assert.assertFalse(Strings.isNullOrEmpty(brokerHost));
+        Assert.assertFalse(Strings.isNullOrEmpty(brokerPort));
 
         Settings.INSTANCE.setBrokerHost(brokerHost);
         Settings.INSTANCE.setBrokerPort(brokerPort);
