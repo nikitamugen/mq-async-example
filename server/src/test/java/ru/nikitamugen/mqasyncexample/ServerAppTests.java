@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +21,7 @@ public class ServerAppTests {
 
 	private static ApplicationContext applicationContext;
 
-    private Logger logger = Logger.getLogger(TestSender.class);
+    private static Logger logger = Logger.getLogger(TestSender.class);
 
 	@Autowired
 	void setContext(ApplicationContext applicationContext) {
@@ -29,7 +30,9 @@ public class ServerAppTests {
 
 	@AfterClass
 	public static void afterClass() {
-		((ConfigurableApplicationContext) applicationContext).close();
+	    if (Objects.nonNull(applicationContext)) {
+            ((ConfigurableApplicationContext) applicationContext).close();
+        }
 	}
 
     @Autowired
@@ -39,11 +42,11 @@ public class ServerAppTests {
     private TestConsumer consumer;
 
 	@Test
-	public void recieveTest() throws Exception {
+	public void receiveTest() throws Exception {
 	    sender.send("some");
 
-	    // Whait a sec to be shure
-        // that a request has been recieved
+	    // Wait a sec to be sure
+        // that a request has been received
         //
         CountDownLatch consumerLatch = consumer.getLatch();
         consumerLatch.await(3000, TimeUnit.MILLISECONDS);
@@ -51,8 +54,8 @@ public class ServerAppTests {
 	    Long actualConsumerLatchCount = consumerLatch.getCount();
         Assert.assertEquals(expectedConsumerLatchCount, actualConsumerLatchCount);
 
-        // Whait a sec to be shure
-        // that a response has been recieved
+        // Wait a sec to be sure
+        // that a response has been received
         //
         CountDownLatch senderLatch = sender.getLatch();
         senderLatch.await(3000, TimeUnit.MILLISECONDS);

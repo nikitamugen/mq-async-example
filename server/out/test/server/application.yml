@@ -2,7 +2,7 @@ spring:
 
   # ActiveMQ Settings
   activemq:
-      broker-url: tcp://localhost:61617
+      broker-url: tcp://localhost:57772
 
   # JMS Settings
   jms:
